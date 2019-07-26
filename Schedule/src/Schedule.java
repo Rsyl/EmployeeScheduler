@@ -394,6 +394,7 @@ public class Schedule extends JFrame{
 			pstmt.setInt(1, id);
 			//update
 			pstmt.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -415,6 +416,7 @@ public class Schedule extends JFrame{
 			pstmt.setInt(6, hours);
 			//update
 			pstmt.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -435,6 +437,7 @@ public class Schedule extends JFrame{
 				employee = new Employee(rs.getInt("id"), rs.getString("fName"), rs.getString("lName"), rs.getString("email"), rs.getLong("phone"), rs.getInt("hours"));
 				empList.add(employee);
 			}
+			con.close();
 		}
 		catch (Exception e){
 			JOptionPane.showMessageDialog(null, e);
@@ -464,6 +467,7 @@ public class Schedule extends JFrame{
 			pstmt.setInt(2, id);
 			// update 
 			pstmt.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -537,5 +541,4 @@ public class Schedule extends JFrame{
 		String name = (String)text.getText();
 		return name.matches("[a-zA-Z]+");
 	}
-
 }
