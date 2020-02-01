@@ -90,6 +90,7 @@ public class employeeList_Panel extends JPanel {
 //		updateBtn = new JButton("Update");
 //		gcL.anchor = GridBagConstraints.LAST_LINE_END;
 //		listPanel.add(updateBtn, gcL);
+		return listPanel;
 	}
 
 	private void setDefaultModel() {
