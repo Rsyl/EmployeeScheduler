@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import business_Logic.addEmployee_AL;
+import logic.addEmployee_AL;
 
 public class addEmployee_Panel extends JPanel{
 	
@@ -63,3 +63,4 @@ public class addEmployee_Panel extends JPanel{
 	}
 	
 }
+

@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -22,6 +21,10 @@ import presentation.employeeList_Panel;
 import presentation.schedule_Panel;
 
 public class Schedule extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//should probably make the connection global so do not need to keep establishing connection?
 	private JTabbedPane mainPane;
 	private schedule_Panel schPanel;
@@ -89,6 +92,7 @@ public class Schedule extends JFrame{
 
 
 	private class delBtnActionListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == delBtn) { 
 				list = empList(); //updates the list everytime the button is clicked
@@ -106,6 +110,7 @@ public class Schedule extends JFrame{
 	}
 
 	private class editBtnActionListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == editBtn) { 
 				int i = listTable.getSelectedRow();
@@ -122,6 +127,7 @@ public class Schedule extends JFrame{
 
 	//enables editing of employees details from the listTable
 	private class listTableActionListener implements TableModelListener{
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			if (e.getType() == TableModelEvent.UPDATE) {  //if the cells were changed, then execute code below
 				int row = e.getFirstRow();
@@ -138,7 +144,7 @@ public class Schedule extends JFrame{
 	public void delete(int id) {
 		String sql = "DELETE FROM employees WHERE id = ?";
 
-		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:/Users/sly/schedule.db" );
+		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:schedule.db" );
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			//update
@@ -155,7 +161,7 @@ public class Schedule extends JFrame{
 
 		String sql = "INSERT INTO employees(id, fName, lName, email, phone, hours) VALUES(?,?,?,?,?,?)";
 
-		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:/Users/sly/schedule.db" );
+		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:schedule.db" );
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			pstmt.setString(2, fName);
@@ -176,7 +182,7 @@ public class Schedule extends JFrame{
 		ArrayList<Employee> empList = new ArrayList<>();
 		try {
 			Class.forName("org.sqlite.JDBC");
-			Connection con = DriverManager.getConnection("jdbc:sqlite:/Users/sly/schedule.db ");
+			Connection con = DriverManager.getConnection("jdbc:sqlite:schedule.db");
 			String query1 = "SELECT * FROM employees ORDER BY id ASC";
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query1);
@@ -200,7 +206,7 @@ public class Schedule extends JFrame{
 		String col = header[column];
 		String query1 = "UPDATE employees SET " + col + " = ? " + "WHERE id = ?";
 
-		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:/Users/sly/schedule.db ");
+		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:schedule.db");
 				PreparedStatement pstmt = conn.prepareStatement(query1)) {
 
 			// set the corresponding param

@@ -1,4 +1,4 @@
-package business_Logic;
+package logic;
 
 public class schedule_AL {
 

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,6 +43,7 @@ public class employeeList_Panel extends JPanel {
 		Object[] columnNames = { "ID", "Name"};
 		model.setColumnIdentifiers(columnNames);
 		listTable = new JTable() {
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				return column > 0;
 			}
@@ -50,18 +52,18 @@ public class employeeList_Panel extends JPanel {
 		
 //		show_Employee();
 		// imports the layout from model which is the default table model
-		leftRenderer.setHorizontalAlignment(JLabel.LEFT); // changes default settings to align all values in the column
+		leftRenderer.setHorizontalAlignment(SwingConstants.LEFT); // changes default settings to align all values in the column
 															// to the left
 		listTable.setAutoCreateRowSorter(true); // enable automatic sorting based on the data type of the column
 		listTable.getColumnModel().getColumn(0).setCellRenderer(leftRenderer); // changes the ID column settings
-		listTable.getColumnModel().getColumn(4).setCellRenderer(leftRenderer); // change the phone column settings
-		listTable.getColumnModel().getColumn(5).setCellRenderer(leftRenderer); // change the hours column settings
+		//listTable.getColumnModel().getColumn(4).setCellRenderer(leftRenderer); // change the phone column settings
+		//listTable.getColumnModel().getColumn(5).setCellRenderer(leftRenderer); // change the hours column settings
 		listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		listTable.getColumnModel().getColumn(0).setPreferredWidth(50);
 		listTable.getColumnModel().getColumn(1).setPreferredWidth(180);
 		listTable.getColumnModel().getColumn(2).setPreferredWidth(180);
-		listTable.getColumnModel().getColumn(3).setPreferredWidth(350);
-		listTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+		//listTable.getColumnModel().getColumn(3).setPreferredWidth(350);
+		//listTable.getColumnModel().getColumn(4).setPreferredWidth(150);
 		listTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
 //		listTableActionListener lForTable = new listTableActionListener();

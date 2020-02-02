@@ -1,4 +1,4 @@
-package business_Logic;
+package logic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +46,7 @@ public class addEmployee_AL extends JFrame implements ActionListener{
 	
 	//function to check that the names do not contain invalid characters
 	private boolean isLetter(JTextField text) {
-		String name = (String)text.getText();
+		String name = text.getText();
 		return name.matches("[a-zA-Z]+");
 	}
 	

@@ -1,3 +1,4 @@
+
 public class Employee {
 	private int id, hours;
 	private long phone;
@@ -33,3 +34,4 @@ public class Employee {
 		return this.hours;
 	}
 }
+
