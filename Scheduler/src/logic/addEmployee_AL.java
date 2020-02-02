@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import persistence.employeeIFace;
 
 public class addEmployee_AL extends JFrame implements ActionListener{
-
+	private static final long serialVersionUID = 1L;
 	private employeeIFace employeeIFace;
 	private JTextField nameTxt;
 	

@@ -5,5 +5,4 @@ public class ScheduleMain {
 		Schedule scheduler = new Schedule();
 		scheduler.execute();
 	}
-
 }

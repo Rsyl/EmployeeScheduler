@@ -16,31 +16,31 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
+import persistence.SqliteDB;
 import presentation.addEmployee_Panel;
 import presentation.employeeList_Panel;
 import presentation.schedule_Panel;
 
 public class Schedule extends JFrame{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	//should probably make the connection global so do not need to keep establishing connection?
 	private JTabbedPane mainPane;
 	private schedule_Panel schPanel;
 	private addEmployee_Panel addEmpPanel;
 	private employeeList_Panel listPanel;
+	private SqliteDB db;
+	
 	JButton modBtn, saveBtn, addEmpBtn, delBtn, editBtn, updateBtn;
 	JLabel sch1Lbl, avail2Lbl, fNameLbl, lNameLbl, emailLbl, idLbl, phoneLbl, listLbl, hoursLbl;
 	JTextArea trial, trial2;
 	JTextField fNameTxt, lNameTxt, emailTxt, idTxt, hoursTxt;
 	JFormattedTextField phoneTxt;
 	JTable listTable;
-	MaskFormatter phoneFormatter = createFormatter();
 	
 	DefaultTableModel model = new DefaultTableModel() { 
-		//need to override the bottom function to sort based on the type of data (Int,Double,String) of the column
-		//if we dont override then the default treats the sorting as strings
+		private static final long serialVersionUID = 1L;
+
+		//We need to override the bottom function to sort based on the type of data (Int,Double,String)
+		//of the column. If we don't override then the default treats the sorting as strings
 		@Override
 		public Class<?> getColumnClass(int column) {
 			Class returnValue;
@@ -58,9 +58,15 @@ public class Schedule extends JFrame{
 	Object[] row = new Object[6];  //array to insert the employees data into the database and show on the jTable;
 	ArrayList<Employee> list = empList();
 
+	//drawing the windows for the application
+	public Schedule (){
+		this.mainPane = new JTabbedPane();
+		this.db = new SqliteDB();
+		init();
+	}
 
 	public Schedule execute() {
-		Schedule tp = new Schedule();
+		Schedule tp = this;
 		tp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tp.setTitle("GPA Schedule");
 		tp.setSize(1000, 770);
@@ -68,14 +74,8 @@ public class Schedule extends JFrame{
 		tp.setVisible(true);
 		return tp;
 	}
-
-	//drawing the windows for the application
-	public Schedule (){
-		this.mainPane = new JTabbedPane();
-		init();
-	}
 	
-	public void init() {
+	private void init() {
 		//creating panels
 		schPanel = new schedule_Panel();
 		addEmpPanel = new addEmployee_Panel();
@@ -183,13 +183,13 @@ public class Schedule extends JFrame{
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection con = DriverManager.getConnection("jdbc:sqlite:schedule.db");
-			String query1 = "SELECT * FROM employees ORDER BY id ASC";
+			String query1 = "SELECT * FROM Employee ORDER BY eID ASC";
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query1);
 
 			Employee employee;
 			while(rs.next()) {
-				employee = new Employee(rs.getInt("id"), rs.getString("fName"), rs.getString("lName"), rs.getString("email"), rs.getLong("phone"), rs.getInt("hours"));
+				employee = new Employee(rs.getInt("eID"), rs.getString("eName"));
 				empList.add(employee);
 			}
 			con.close();
@@ -202,15 +202,15 @@ public class Schedule extends JFrame{
 	
 	//updating the database when values are modified
 	public void update(Object data, int id, int column) {
-		String [] header = {"id","fName","lName","email","phone","hours"};
+		String [] header = {"eID","eName"};
 		String col = header[column];
-		String query1 = "UPDATE employees SET " + col + " = ? " + "WHERE id = ?";
+		String query1 = "UPDATE Employee SET " + col + " = ? " + "WHERE eID = ?";
 
 		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:schedule.db");
 				PreparedStatement pstmt = conn.prepareStatement(query1)) {
 
 			// set the corresponding param
-			if (column >=1 && column < 4) {
+			if (column >=1 && column < 2) {
 				String sData = (String) data;
 				pstmt.setString(1, sData);
 			}
@@ -232,24 +232,7 @@ public class Schedule extends JFrame{
 	public void show_Employee() {
 		for (int i=0; i<list.size();i++) {
 			row[0]=list.get(i).getID();
-			row[1]=list.get(i).getFirst();
-			row[2]=list.get(i).getLast();
-			row[3]=list.get(i).getEmail();
-			row[4]=list.get(i).getPhone();
-			row[5]=list.get(i).getHours();
-			model.addRow(row);
+			row[1]=list.get(i).getName();
 		}	
-	}
-	// to format the input method for the phone number
-	private MaskFormatter createFormatter() {
-		MaskFormatter formatter = null;
-		try {
-			formatter = new MaskFormatter("(###)###-####");
-			formatter.setPlaceholderCharacter(' ');
-			formatter.setValueContainsLiteralCharacters(false);
-		} catch (java.text.ParseException exc) {
-			System.err.println("formatter is bad: " + exc.getMessage());
-		}
-		return formatter;
 	}
 }

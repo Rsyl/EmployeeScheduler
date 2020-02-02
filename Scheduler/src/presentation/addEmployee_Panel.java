@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import logic.addEmployee_AL;
 
 public class addEmployee_Panel extends JPanel{
-	
+	private static final long serialVersionUID = 1L;
 	private JPanel addEmp_Panel;
 	private JLabel name_Lbl;
 	private JTextField name_Txt;
